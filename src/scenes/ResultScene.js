@@ -9,6 +9,8 @@ export class ResultScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+    soundManager.attachPhaser(this);
+    soundManager.playBGM('bgm_menu');
     const run = gameState.run;
     const dayData = gameState.dialogues.days.find((d) => d.day === run.day) || gameState.dialogues.days[0];
     const victory = gameState.isDayVictory();
@@ -16,6 +18,7 @@ export class ResultScene extends Phaser.Scene {
     if (victory) {
       gameState.completeCurrentDay();
       soundManager.playDayWin();
+      this.time.delayedCall(650, () => soundManager.playVoice('valentic_win'));
     } else {
       soundManager.playError();
     }

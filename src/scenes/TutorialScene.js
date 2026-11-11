@@ -1,3 +1,4 @@
+import { soundManager } from '../systems/SoundManager.js';
 import { createPixelButton, drawPanel } from '../ui/UIHelpers.js';
 
 export class TutorialScene extends Phaser.Scene {
@@ -7,6 +8,9 @@ export class TutorialScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+    soundManager.attachPhaser(this);
+    soundManager.playBGM('bgm_menu');
+    soundManager.playVoice('valentic_welcome');
 
     this.add.image(width / 2, height / 2, 'bg_cuarto').setDisplaySize(width, height).setTint(0x64748b);
 
@@ -83,7 +87,10 @@ export class TutorialScene extends Phaser.Scene {
       fillColor: 0x16a34a,
       hoverColor: 0x22c55e,
       borderColor: 0x14532d,
-      onClick: () => this.scene.start('MenuScene'),
+      onClick: () => {
+        soundManager.stopVoice();
+        this.scene.start('MenuScene');
+      },
     });
   }
 }

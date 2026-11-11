@@ -8,6 +8,8 @@ const DEFAULT_PROGRESS = {
   settings: {
     muted: false,
     accessibleTimer: false,
+    musicEnabled: true,
+    voiceEnabled: true,
   },
 };
 
@@ -57,6 +59,18 @@ class GameStateManager {
     this.progress.settings.muted = !this.progress.settings.muted;
     this.saveProgress();
     return this.progress.settings.muted;
+  }
+
+  toggleMusic() {
+    this.progress.settings.musicEnabled = !this.progress.settings.musicEnabled;
+    this.saveProgress();
+    return this.progress.settings.musicEnabled;
+  }
+
+  toggleVoice() {
+    this.progress.settings.voiceEnabled = !this.progress.settings.voiceEnabled;
+    this.saveProgress();
+    return this.progress.settings.voiceEnabled;
   }
 
   toggleAccessibleTimer() {

@@ -9,6 +9,14 @@ export class MenuScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+    soundManager.attachPhaser(this);
+    soundManager.stopVoice();
+    soundManager.playBGM('bgm_menu');
+
+    // Desbloqueo suave de audio en el primer toque/clic si el navegador bloqueó autoplay
+    this.input.once('pointerdown', () => {
+      soundManager.playBGM('bgm_menu');
+    });
 
     // Fondo dividido Hogar (izq) vs Colegio (der) fiel al diseño de pantallas
     const leftCrop = this.add.image(width / 2, height / 2, 'bg_hogar').setDisplaySize(width, height);
@@ -23,7 +31,19 @@ export class MenuScene extends Phaser.Scene {
     this.add.rectangle(width / 2, height / 2, 4, height, 0x94a3b8, 0.7);
 
     // Personajes en composición de portada: Valentic a la izquierda, Alex y Sombra a la derecha
-    this.add.image(155, height - 30, 'valentic').setOrigin(0.5, 1).setScale(1.38);
+    const valenticImg = this.add.image(155, height - 30, 'valentic').setOrigin(0.5, 1).setScale(1.38);
+    valenticImg.setInteractive({ useHandCursor: true });
+    valenticImg.on('pointerdown', () => {
+      soundManager.playClick();
+      soundManager.playVoice('valentic_welcome');
+    });
+    createPixelButton(this, 155, height - 20, 182, 28, '▶ Escuchar a Valentic', {
+      fillColor: 0x0284c7,
+      hoverColor: 0x0ea5e9,
+      borderColor: 0xbae6fd,
+      fontSize: '11.5px',
+      onClick: () => soundManager.playVoice('valentic_welcome'),
+    });
     this.add.image(828, height - 22, 'sombra_hostil').setOrigin(0.5, 1).setScale(0.92).setAlpha(0.92);
     this.add.image(735, height - 20, 'alex_tense').setOrigin(0.5, 1).setScale(0.96);
 
@@ -83,8 +103,8 @@ export class MenuScene extends Phaser.Scene {
       onClick: () => this.scene.start('DiaryScene', { returnTo: 'MenuScene' }),
     });
 
-    // Controles de accesibilidad y sonido
-    const timerBtn = createPixelButton(this, width / 2 - 80, 424, 150, 34, this.getTimerText(), {
+    // Controles de accesibilidad, voces y sonido (simétricos)
+    const timerBtn = createPixelButton(this, width / 2 - 126, 424, 118, 34, this.getTimerText(), {
       fillColor: 0x334155,
       hoverColor: 0x475569,
       borderColor: 0x94a3b8,
@@ -95,13 +115,26 @@ export class MenuScene extends Phaser.Scene {
       },
     });
 
-    const muteBtn = createPixelButton(this, width / 2 + 80, 424, 150, 34, this.getMuteText(), {
+    const voiceBtn = createPixelButton(this, width / 2, 424, 118, 34, this.getVoiceText(), {
+      fillColor: 0x0f766e,
+      hoverColor: 0x0d9488,
+      borderColor: 0x99f6e4,
+      fontSize: '12px',
+      onClick: () => {
+        gameState.toggleVoice();
+        soundManager.syncVolumes();
+        voiceBtn.setLabel(this.getVoiceText());
+      },
+    });
+
+    const muteBtn = createPixelButton(this, width / 2 + 126, 424, 118, 34, this.getMuteText(), {
       fillColor: 0x334155,
       hoverColor: 0x475569,
       borderColor: 0x94a3b8,
       fontSize: '12px',
       onClick: () => {
         gameState.toggleMuted();
+        soundManager.syncVolumes();
         soundManager.playClick();
         muteBtn.setLabel(this.getMuteText());
       },
@@ -118,11 +151,15 @@ export class MenuScene extends Phaser.Scene {
   }
 
   getTimerText() {
-    return gameState.progress.settings.accessibleTimer ? 'Temporizador: 12s' : 'Temporizador: 7s';
+    return gameState.progress.settings.accessibleTimer ? 'Tiempo: 12s' : 'Tiempo: 7s';
+  }
+
+  getVoiceText() {
+    return gameState.progress.settings.voiceEnabled ? 'Voces: On' : 'Voces: Off';
   }
 
   getMuteText() {
-    return gameState.progress.settings.muted ? 'Sonido: Silencio' : 'Sonido: Activo';
+    return gameState.progress.settings.muted ? 'Audio: Off' : 'Audio: On';
   }
 
   openDaySelector() {

@@ -78,6 +78,9 @@ Juego-Valentic/
 │       ├── DiaryScene.js         # Coleccionable Diario de Convivencia
 │       └── ResultScene.js        # Balance de jornada y gráfico STEAM
 └── assets/
+    ├── audio/
+    │   ├── bgm/                  # 4 pistas ambientales 16-bit (menú, hogar, colegio, tensión)
+    │   └── voices/               # 76 clips de voz en español por personaje y guía de Valentic
     ├── backgrounds/              # 5 entornos unificados (Hogar, Cuarto, Colegio Int/Ext, Orientación)
     └── sprites/                  # Valentic (campaña), Alex, La Sombra, Elena, Mateo, Sofía, Profe Ricardo
 ```

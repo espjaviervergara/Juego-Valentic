@@ -1,4 +1,5 @@
 import { gameState } from '../systems/GameState.js';
+import { soundManager } from '../systems/SoundManager.js';
 import { createPixelButton, drawPanel } from '../ui/UIHelpers.js';
 
 export class DiaryScene extends Phaser.Scene {
@@ -39,6 +40,7 @@ export class DiaryScene extends Phaser.Scene {
         borderColor: 0xfde68a,
         fontSize: '13px',
         onClick: () => {
+          soundManager.playDiaryPage();
           this.selectedDay = d.day;
           this.scene.restart({ returnTo: this.returnTo, isOverlay: this.isOverlay, day: d.day });
         },

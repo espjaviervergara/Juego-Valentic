@@ -1,8 +1,123 @@
 import { gameState } from './GameState.js';
 
+const BGM_NORMAL_VOLUME = 0.16;
+const BGM_DUCKED_VOLUME = 0.05;
+
 class SoundManager {
   constructor() {
     this.ctx = null;
+    this.phaserSound = null;
+    this.cacheAudio = null;
+    this.currentBgmKey = null;
+    this.currentBgm = null;
+    this.currentVoiceKey = null;
+    this.currentVoice = null;
+  }
+
+  attachPhaser(scene) {
+    if (!scene) return;
+    this.phaserSound = scene.sound;
+    this.cacheAudio = scene.cache?.audio;
+    this.syncVolumes();
+  }
+
+  syncVolumes() {
+    const muted = gameState.progress.settings.muted;
+    const musicOn = gameState.progress.settings.musicEnabled;
+    const voiceOn = gameState.progress.settings.voiceEnabled;
+
+    if (this.currentBgm) {
+      if (muted || !musicOn) {
+        this.currentBgm.setVolume(0);
+      } else {
+        const isSpeaking = Boolean(this.currentVoice && this.currentVoice.isPlaying);
+        this.currentBgm.setVolume(isSpeaking ? BGM_DUCKED_VOLUME : BGM_NORMAL_VOLUME);
+      }
+    }
+
+    if (this.currentVoice && (muted || !voiceOn)) {
+      this.stopVoice();
+    }
+  }
+
+  playBGM(key) {
+    if (!this.phaserSound || !this.cacheAudio?.exists(key)) return;
+    if (this.currentBgmKey === key && this.currentBgm) {
+      if (!this.currentBgm.isPlaying) {
+        this.currentBgm.play({ loop: true, volume: this.getTargetBgmVolume() });
+      }
+      this.syncVolumes();
+      return;
+    }
+
+    if (this.currentBgm) {
+      this.currentBgm.stop();
+      this.currentBgm.destroy();
+      this.currentBgm = null;
+    }
+
+    this.currentBgmKey = key;
+    this.currentBgm = this.phaserSound.add(key, {
+      loop: true,
+      volume: this.getTargetBgmVolume(),
+    });
+    this.currentBgm.play();
+  }
+
+  getTargetBgmVolume() {
+    if (gameState.progress.settings.muted || !gameState.progress.settings.musicEnabled) {
+      return 0;
+    }
+    const isSpeaking = Boolean(this.currentVoice && this.currentVoice.isPlaying);
+    return isSpeaking ? BGM_DUCKED_VOLUME : BGM_NORMAL_VOLUME;
+  }
+
+  stopVoice() {
+    if (this.currentVoice) {
+      this.currentVoice.off('complete');
+      if (this.currentVoice.isPlaying) {
+        this.currentVoice.stop();
+      }
+      this.currentVoice.destroy();
+      this.currentVoice = null;
+    }
+    this.syncVolumes();
+  }
+
+  playVoice(key, onComplete = null) {
+    if (!key) return;
+    this.currentVoiceKey = key;
+    this.stopVoice();
+
+    if (
+      gameState.progress.settings.muted
+      || !gameState.progress.settings.voiceEnabled
+      || !this.phaserSound
+      || !this.cacheAudio?.exists(key)
+    ) {
+      return;
+    }
+
+    const voice = this.phaserSound.add(key, { volume: 0.95 });
+    this.currentVoice = voice;
+    this.syncVolumes();
+
+    voice.once('complete', () => {
+      if (this.currentVoice === voice) {
+        this.currentVoice = null;
+        voice.destroy();
+        this.syncVolumes();
+      }
+      if (onComplete) onComplete();
+    });
+
+    voice.play();
+  }
+
+  replayLastVoice() {
+    if (this.currentVoiceKey) {
+      this.playVoice(this.currentVoiceKey);
+    }
   }
 
   ensureContext() {
@@ -73,6 +188,11 @@ class SoundManager {
 
   playBlockSnap() {
     this.tone(440, 0.07, 'triangle', 0.07);
+  }
+
+  playDiaryPage() {
+    this.tone(587.33, 0.08, 'sine', 0.07, 0);
+    this.tone(783.99, 0.14, 'sine', 0.07, 0.07);
   }
 
   playError() {

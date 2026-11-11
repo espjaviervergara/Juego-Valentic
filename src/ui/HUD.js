@@ -98,25 +98,34 @@ export class HUD {
     this.container.add([this.dayText, this.vinculosText]);
 
     // Botones compactos de utilidad
-    this.makeMiniButton(558, 62, 66, 22, 'Diario', 0x2b6cb0, () => {
+    this.makeMiniButton(556, 62, 54, 22, 'Diario', 0x2b6cb0, () => {
       soundManager.playClick();
       if (this.onOpenDiary) this.onOpenDiary();
     });
 
-    this.timerBtnText = this.makeMiniButton(630, 62, 92, 22, this.getTimerBtnLabel(), 0x4a5568, () => {
+    this.timerBtnText = this.makeMiniButton(615, 62, 82, 22, this.getTimerBtnLabel(), 0x4a5568, () => {
       soundManager.playClick();
       gameState.toggleAccessibleTimer();
       this.timerBtnText.setText(this.getTimerBtnLabel());
     });
 
-    this.muteBtnText = this.makeMiniButton(728, 62, 74, 22, this.getMuteBtnLabel(), 0x4a5568, () => {
+    this.voiceBtnText = this.makeMiniButton(702, 62, 64, 22, this.getVoiceBtnLabel(), 0x0f766e, () => {
+      gameState.toggleVoice();
+      soundManager.syncVolumes();
+      soundManager.playClick();
+      this.voiceBtnText.setText(this.getVoiceBtnLabel());
+    });
+
+    this.muteBtnText = this.makeMiniButton(771, 62, 68, 22, this.getMuteBtnLabel(), 0x4a5568, () => {
       gameState.toggleMuted();
+      soundManager.syncVolumes();
       soundManager.playClick();
       this.muteBtnText.setText(this.getMuteBtnLabel());
     });
 
-    this.makeMiniButton(808, 62, 66, 22, 'Menú', 0x742a2a, () => {
+    this.makeMiniButton(844, 62, 50, 22, 'Menú', 0x742a2a, () => {
       soundManager.playClick();
+      soundManager.stopVoice();
       if (this.onBackMenu) this.onBackMenu();
     });
 
@@ -133,8 +142,12 @@ export class HUD {
     return gameState.progress.settings.accessibleTimer ? 'Tiempo: 12s' : 'Tiempo: 7s';
   }
 
+  getVoiceBtnLabel() {
+    return gameState.progress.settings.voiceEnabled ? 'Voz: On' : 'Voz: Off';
+  }
+
   getMuteBtnLabel() {
-    return gameState.progress.settings.muted ? 'Sonido: Off' : 'Sonido: On';
+    return gameState.progress.settings.muted ? 'Audio: Off' : 'Audio: On';
   }
 
   makeMiniButton(x, y, w, h, label, color, onClick) {

@@ -11,6 +11,9 @@ export class GameScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+    soundManager.attachPhaser(this);
+    this.events.once('shutdown', () => soundManager.stopVoice());
+
     const run = gameState.run;
     if (!run) {
       gameState.startDay(1);
@@ -19,6 +22,10 @@ export class GameScene extends Phaser.Scene {
     this.dayData = gameState.dialogues.days.find((d) => d.day === gameState.run.day)
       || gameState.dialogues.days[0];
     this.sceneData = this.dayData.scenes[gameState.run.sceneIndex];
+    this.sceneBgmKey = (this.sceneData.bgKey === 'bg_hogar' || this.sceneData.bgKey === 'bg_cuarto')
+      ? 'bgm_hogar'
+      : 'bgm_colegio';
+    soundManager.playBGM(this.sceneBgmKey);
 
     // Fondo unificado con tinte de horario/ambiente
     this.bgImage = this.add.image(width / 2, height / 2, this.sceneData.bgKey).setDisplaySize(width, height);
@@ -83,6 +90,14 @@ export class GameScene extends Phaser.Scene {
       lineSpacing: 6,
     });
 
+    this.replayBtn = createPixelButton(this, width - 270, 492, 122, 36, '▶ Repetir voz', {
+      fillColor: 0x0f766e,
+      hoverColor: 0x0d9488,
+      borderColor: 0x99f6e4,
+      fontSize: '13px',
+      onClick: () => soundManager.replayLastVoice(),
+    });
+
     this.nextBtn = createPixelButton(this, width - 118, 492, 160, 36, 'Continuar ▸', {
       fillColor: 0x2563eb,
       hoverColor: 0x3b82f6,
@@ -94,6 +109,7 @@ export class GameScene extends Phaser.Scene {
       this.speakerBadge,
       this.speakerText,
       this.dialogueText,
+      this.replayBtn,
       this.nextBtn,
     ]);
 
@@ -121,12 +137,19 @@ export class GameScene extends Phaser.Scene {
     this.refreshCharactersVisual();
     this.hud.refresh();
 
+    const sid = this.sceneData.id;
     this.narrativeQueue = [
-      ...this.sceneData.introLines.map((line) => ({ speaker: 'Situación', text: line, isProvocation: false })),
+      ...this.sceneData.introLines.map((line, idx) => ({
+        speaker: 'Situación',
+        text: line,
+        isProvocation: false,
+        voiceKey: `${sid}_intro_${idx}`,
+      })),
       {
         speaker: this.sceneData.provocation.speaker,
         text: this.sceneData.provocation.text,
         isProvocation: true,
+        voiceKey: `${sid}_prov`,
       },
     ];
     this.narrativeIndex = -1;
@@ -179,6 +202,7 @@ export class GameScene extends Phaser.Scene {
     const item = this.narrativeQueue[this.narrativeIndex];
     this.speakerText.setText(item.speaker);
     this.dialogueText.setText(item.text);
+    soundManager.playVoice(item.voiceKey);
 
     if (item.isProvocation) {
       soundManager.playAlert();
@@ -206,6 +230,7 @@ export class GameScene extends Phaser.Scene {
     this.dialogueGroup.setVisible(false);
     this.clearPhaseLayer();
     this.semaforo.setState('red', 'LUZ ROJA: ¡ALTO!');
+    soundManager.playVoice('valentic_red');
     this.alertOverlay.setAlpha(0.18);
     this.breathProgress = 0;
 
@@ -289,6 +314,7 @@ export class GameScene extends Phaser.Scene {
     this.phaseStartMs = performance.now();
     this.alertOverlay.setAlpha(0);
     this.semaforo.setState('yellow', 'AMARILLO: Descodifica');
+    soundManager.playVoice('valentic_yellow');
 
     const { width } = this.scale;
     this.phaseLayer.add(drawPanel(this, 44, 108, width - 88, 408, 0x0f172a, 0.96, 0xf59e0b));
@@ -376,6 +402,8 @@ export class GameScene extends Phaser.Scene {
     this.activePhase = 'YELLOW_SHADOW';
     this.phaseStartMs = performance.now();
     this.semaforo.setState('yellow', 'AMARILLO: ¡Modula Sombra!');
+    soundManager.playBGM('bgm_tenso');
+    soundManager.playVoice(`${this.sceneData.id}_shadow`);
 
     const { width } = this.scale;
     this.phaseLayer.add(drawPanel(this, 44, 108, width - 88, 408, 0x090d16, 0.97, 0xa855f7));
@@ -517,6 +545,8 @@ export class GameScene extends Phaser.Scene {
     this.activePhase = 'GREEN_CNV';
     this.phaseStartMs = performance.now();
     this.semaforo.setState('green', 'VERDE: ¡Comunica CNV!');
+    soundManager.playBGM(this.sceneBgmKey);
+    soundManager.playVoice('valentic_green');
 
     const { width } = this.scale;
     this.phaseLayer.add(drawPanel(this, 44, 108, width - 88, 408, 0x0f172a, 0.96, 0x22c55e));
@@ -642,14 +672,47 @@ export class GameScene extends Phaser.Scene {
             this.hud.refresh();
             this.refreshCharactersVisual();
 
-            if (isClean) soundManager.playSuccess();
-            else soundManager.playError();
-
             const bd = gameState.checkBreakdown();
             if (bd.broken) {
+              soundManager.playError();
               this.handleBreakdown(bd.dayFailed);
+              return;
+            }
+
+            if (isClean) {
+              soundManager.playSuccess();
+              const voiceKey = `${this.sceneData.id}_cnv_clean`;
+              const canSpeak = !gameState.progress.settings.muted
+                && gameState.progress.settings.voiceEnabled
+                && this.cache.audio.exists(voiceKey);
+
+              if (canSpeak) {
+                resetBtn.destroy();
+                sendBtn.destroy();
+                let moved = false;
+                const goMirror = () => {
+                  if (moved) return;
+                  moved = true;
+                  this.showMirrorPhase(true);
+                };
+                this.cnvOptionsContainer.add(this.add.text(210, 470, '🗣 Alex pronunciando su respuesta...', {
+                  fontFamily: 'Trebuchet MS, sans-serif',
+                  fontSize: '15px',
+                  fontStyle: 'bold',
+                  color: '#86efac',
+                }).setOrigin(0.5));
+                this.cnvOptionsContainer.add(createPixelButton(this, 680, 470, 220, 38, 'Ver Consecuencia ▸', {
+                  fillColor: 0x2563eb,
+                  hoverColor: 0x3b82f6,
+                  onClick: goMirror,
+                }));
+                soundManager.playVoice(voiceKey, goMirror);
+              } else {
+                this.showMirrorPhase(true);
+              }
             } else {
-              this.showMirrorPhase(isClean);
+              soundManager.playError();
+              this.showMirrorPhase(false);
             }
           },
         });
@@ -667,6 +730,7 @@ export class GameScene extends Phaser.Scene {
   showMirrorPhase(isPositive) {
     this.clearPhaseLayer();
     this.activePhase = 'MIRROR';
+    soundManager.playVoice(`${this.sceneData.id}_${isPositive ? 'mirror_pos' : 'mirror_neg'}`);
 
     const { width } = this.scale;
     const mirror = isPositive ? this.sceneData.mirror.positive : this.sceneData.mirror.negative;
@@ -745,6 +809,8 @@ export class GameScene extends Phaser.Scene {
   handleBreakdown(dayFailed) {
     this.clearPhaseLayer();
     this.activePhase = 'BREAKDOWN';
+    soundManager.stopVoice();
+    soundManager.playBGM(this.sceneBgmKey);
     soundManager.playBreakdown();
 
     const { width } = this.scale;
