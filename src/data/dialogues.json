@@ -1,0 +1,975 @@
+{
+  "title": "Ecos Bivalentes: Entre el Grito y el Eco",
+  "days": [
+    {
+      "day": 1,
+      "dayName": "Lunes",
+      "subtitle": "La chispa matutina y el eco en el pasillo",
+      "diary": {
+        "id": 1,
+        "title": "Página 1 · Romper el primer eco",
+        "reflection": "Cuando en casa alguien grita por cansancio o estrés laboral, ese tono no habla de mi valor, sino de su desbordamiento. Poner un límite con respeto evita que yo repita el mismo grito con mis compañeros.",
+        "scienceFact": "Dato STEAM (Ciencia): Mantener una exhalación más larga que la inhalación (4s / 6s) activa el nervio vago y reduce el cortisol, devolviendo el mando a la corteza prefrontal.",
+        "toolTip": "Técnica del día: Pausa Somática antes de contestar + Identificar la necesidad oculta."
+      },
+      "scenes": [
+        {
+          "id": "d1_hogar_comedor",
+          "locationLabel": "Hogar · Comedor familiar (Mañana)",
+          "bgKey": "bg_hogar",
+          "bgTint": "0xffffff",
+          "characterKey": "elena",
+          "characterName": "Elena (Mamá)",
+          "introLines": [
+            "6:15 a.m. El sonido de ollas y el afán llenan la casa antes de salir hacia el colegio.",
+            "Elena revisa su reloj después de un doble turno y mira los platos de la noche anterior."
+          ],
+          "provocation": {
+            "speaker": "Elena",
+            "text": "\"¡Siempre dejas todo tirado y ya voy tarde! ¿Es que no sirves para ayudar en nada en esta casa?\""
+          },
+          "pauseTip": {
+            "scienceNote": "Neurobiología: El grito dispara tu amígdala (respuesta de lucha o huida). Sostén la pausa 4 segundos para activar el sistema parasimpático.",
+            "breathHint": "Inhala 2s... sostén... exhala lento para frenar la respuesta impulsiva."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · Descodifica qué hay realmente detrás del grito de Elena:",
+            "options": [
+              {
+                "text": "Me odia y busca humillarme antes de estudiar.",
+                "isCorrect": false,
+                "feedback": "Tomarlo como ataque personal dispara tu Tensión Interna (+10%)."
+              },
+              {
+                "text": "Está agotada y desbordada por el turno doble y la presión económica.",
+                "isCorrect": true,
+                "feedback": "¡Exacto! El cansancio no justifica el grito, pero descifrarlo te da +1 Energía de Autocuidado."
+              },
+              {
+                "text": "Disfruta peleando cada mañana por costumbre.",
+                "isCorrect": false,
+                "feedback": "Suponer mala intención alimenta el ciclo de hostilidad (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"¡Gritale que es una injusta y sal dando un portazo! Si te callas, te va a seguir pisoteando.\"",
+            "refutations": [
+              {
+                "text": "Si grito y tiro la puerta, saldré con rabia al colegio y repetiré el problema.",
+                "isCorrect": true,
+                "feedback": "¡Sombra modulada! Transformaste el impulso de venganza en protección consciente."
+              },
+              {
+                "text": "Es verdad, tengo que gritar más duro para que me respete.",
+                "isCorrect": false,
+                "feedback": "Cediste al mandato reactivo. El conflicto escala."
+              },
+              {
+                "text": "Mejor me trago todo en silencio aunque explote después en el salón.",
+                "isCorrect": false,
+                "feedback": "Reprimir sin poner límites solo acumula presión para más tarde."
+              }
+            ],
+            "failOutcome": "Alex responde con un portazo. La tensión acumulada viajará contigo hasta el colegio."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Arma tu respuesta en orden: 1. Hecho objetivo + 2. Sentimiento + 3. Petición concreta",
+            "slots": {
+              "hecho": [
+                { "text": "Cuando me hablas a los gritos por los platos en la mañana...", "valid": true },
+                { "text": "Como siempre estás de mal humor y eres injusta...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...me siento tenso e incómodo para salir a estudiar...", "valid": true },
+                { "text": "...me da igual lo que digas porque nunca ayudas...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...te pido que hablemos con calma; en la tarde me encargo de la cocina.", "valid": true },
+                { "text": "...así que déjame en paz y lávalos tú si tienes tanta prisa.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "Elena suspira, baja los hombros y dice: \"Está bien... ve al colegio, en la noche hablamos con calma.\"",
+              "mediumTerm": "Llegas al colegio con la mente despejada, sin cargar el portazo en los hombros.",
+              "mathScoreNote": "Balance Relacional: Gastaste 1 Energía hoy -> +25% capital de convivencia familiar."
+            },
+            "negative": {
+              "immediate": "Gritos cruzados y un portazo que silencia la cocina por unos segundos.",
+              "mediumTerm": "La adrenalina residual entra contigo al colegio (Humor Latente activado para la siguiente escena).",
+              "mathScoreNote": "Balance Relacional: Sensación de control = 3s | Costo acumulado = Tensión arrastrada al aula."
+            }
+          }
+        },
+        {
+          "id": "d1_colegio_pasillo",
+          "locationLabel": "Colegio · Pasillo principal (Entrada)",
+          "bgKey": "bg_colegio_interior",
+          "bgTint": "0xffffff",
+          "characterKey": "mateo",
+          "characterName": "Mateo (Compañero)",
+          "introLines": [
+            "Suena el timbre de entrada. El pasillo está lleno frente a los casilleros.",
+            "Mateo pasa apurado con su grupo, choca tu hombro y tira tus cuadernos al piso."
+          ],
+          "provocation": {
+            "speaker": "Mateo",
+            "text": "\"¡Mira por dónde caminas, estorbo! ¿O qué, vas a llorar por dos cuadernos?\""
+          },
+          "pauseTip": {
+            "scienceNote": "Ciencia STEAM: Con público alrededor, el cerebro percibe amenaza social. Respirar 4s oxigena la corteza prefrontal antes de actuar.",
+            "breathHint": "Activa el freno de Valentic para no responder con los puños."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · ¿Qué necesidad oculta suele haber detrás de la burla pública de Mateo?",
+            "options": [
+              {
+                "text": "Busca llamar la atención del grupo y ocultar su propia inseguridad.",
+                "isCorrect": true,
+                "feedback": "¡Bien leído! Comprender la presión social te da +1 Energía de Autocuidado."
+              },
+              {
+                "text": "Me tiene envidia y quiere destruirme desde hoy.",
+                "isCorrect": false,
+                "feedback": "Esa lectura aumenta tu alerta defensiva (+10% Tensión)."
+              },
+              {
+                "text": "El colegio entero está en mi contra.",
+                "isCorrect": false,
+                "feedback": "Generalizar el rechazo alimenta la hostilidad interna (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"¡Empújalo contra los casilleros! Si no pegas primero delante de todos, quedas como un cobarde.\"",
+            "refutations": [
+              {
+                "text": "Poner un límite con voz firme no es debilidad; pelear me traerá sanción y más problemas.",
+                "isCorrect": true,
+                "feedback": "¡Transmutación lograda! La Sombra retrocede y te deja hablar con claridad."
+              },
+              {
+                "text": "Tiene razón la Sombra: un empujón rápido y nadie se vuelve a meter conmigo.",
+                "isCorrect": false,
+                "feedback": "Responder con fuerza física inicia una riña y escala el conflicto."
+              },
+              {
+                "text": "Recojo mis cosas mirando el piso sin decir nada.",
+                "isCorrect": false,
+                "feedback": "La sumisión no pone límites claros y deja la frustración guardada."
+              }
+            ],
+            "failOutcome": "Alex empuja a Mateo. El pasillo se alborota y ambos quedan con llamado de atención."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Ensambla un límite firme sin agredir frente al grupo:",
+            "slots": {
+              "hecho": [
+                { "text": "Al chocar conmigo, tirar mis cuadernos y llamarme estorbo...", "valid": true },
+                { "text": "Como eres un payaso que solo busca peleas...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...me molesta y me parece una falta de respeto...", "valid": true },
+                { "text": "...me dan ganas de darte tu merecido aquí mismo...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...por favor ayúdame a recogerlos y hablemos con respeto.", "valid": true },
+                { "text": "...lárgate antes de que te haga recogerlos a la fuerza.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "Mateo queda descolocado al no recibir violencia; patea un poco el aire, recoge un cuaderno y se aleja.",
+              "mediumTerm": "Sofía y otros compañeros notan tu firmeza serena. Evitas una suspensión y ganas respeto real.",
+              "mathScoreNote": "Balance Relacional: Asertividad sin violencia = +25% Clima de Convivencia."
+            },
+            "negative": {
+              "immediate": "Empujones y gritos en el pasillo mientras todos sacan el celular.",
+              "mediumTerm": "Anotación en el observador, tensión alta durante todo el día y ruptura con tus compañeros.",
+              "mathScoreNote": "Balance Relacional: Ilusión de respeto = 5s | Costo = -15% a -20% en convivencia."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "dayName": "Martes",
+      "subtitle": "Frustración en el aula y exclusión en el patio",
+      "diary": {
+        "id": 2,
+        "title": "Página 2 · Firmeza sin agresión",
+        "reflection": "El error académico o un llamado de atención no me define como persona. Responder con sarcasmo o rabia cierra las puertas del diálogo; expresar lo que necesito con claridad abre soluciones.",
+        "scienceFact": "Dato STEAM (Tecnología/Lógica): Igual que una compuerta lógica SI (Pausa Y Empatía) ENTONCES Diálogo, nuestro cerebro requiere ambas condiciones para elegir respuestas asertivas.",
+        "toolTip": "Técnica del día: Diferenciar entre pasividad, agresividad y comunicación asertiva."
+      },
+      "scenes": [
+        {
+          "id": "d2_aula_clase",
+          "locationLabel": "Colegio · Aula de clases",
+          "bgKey": "bg_colegio_interior",
+          "bgTint": "0xf7fafc",
+          "characterKey": "profe_ricardo",
+          "characterName": "Profe Ricardo (Orientador / Docente)",
+          "introLines": [
+            "En clase, el Profe Ricardo entrega los resultados de un taller exigente.",
+            "Nota que estás distraído mirando la ventana y te llama la atención frente al salón."
+          ],
+          "provocation": {
+            "speaker": "Profe Ricardo",
+            "text": "\"Alex, van dos veces que te distraes y la nota del taller estuvo muy baja. ¿Vas a seguir perdiendo el tiempo?\""
+          },
+          "pauseTip": {
+            "scienceNote": "Ciencia STEAM: La vergüenza pública activa el mismo circuito neuronal que el dolor físico. Respira antes de responder.",
+            "breathHint": "Pausa Activa: suelta los hombros y baja la guardia."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · ¿Qué busca realmente el Profe Ricardo con su comentario?",
+            "options": [
+              {
+                "text": "Ridiculizarme frente a Sofía y Mateo.",
+                "isCorrect": false,
+                "feedback": "Interpretarlo como ataque personal dispara tu Tensión Interna (+10%)."
+              },
+              {
+                "text": "Está preocupado por mi rendimiento y presiona para que reaccione.",
+                "isCorrect": true,
+                "feedback": "¡Exacto! Aunque su frase sonó dura, su intención es académica (+1 Autocuidado)."
+              },
+              {
+                "text": "Le caigo mal desde principio de año.",
+                "isCorrect": false,
+                "feedback": "Esa suposición bloquea la posibilidad de pedir apoyo (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"¡Contéstale feo! Dile que su clase es aburrida y tira el cuaderno sobre el pupitre.\"",
+            "refutations": [
+              {
+                "text": "Puedo aclarar con respeto que tuve una mañana pesada y pedir ayuda para mejorar.",
+                "isCorrect": true,
+                "feedback": "¡Bien! Elegiste proteger tu proceso escolar en lugar de sabotearte."
+              },
+              {
+                "text": "Voy a responderle con sarcasmo para que el salón se ría.",
+                "isCorrect": false,
+                "feedback": "El sarcasmo escala el conflicto disciplinario."
+              },
+              {
+                "text": "No digo nada y rompo la hoja del taller en secreto.",
+                "isCorrect": false,
+                "feedback": "Aislarte ante la frustración mantiene intacta la tensión."
+              }
+            ],
+            "failOutcome": "Alex contesta con altanería frente al grupo y recibe un llamado a coordinación."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Responde al docente aplicando los tres bloques CNV:",
+            "slots": {
+              "hecho": [
+                { "text": "Profe, al señalar mi nota y mi distracción frente al grupo...", "valid": true },
+                { "text": "Usted siempre me regaña sin saber nada de mi vida...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...me siento avergonzado y bloqueado por problemas que traigo...", "valid": true },
+                { "text": "...me da rabia que me tenga entre ojos todo el periodo...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...le pido que al finalizar la clase me explique qué debo reforzar.", "valid": true },
+                { "text": "...déjeme en paz que yo veré si recupero o no.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "El Profe Ricardo asiente comprensivo: \"Disculpa el tono, Alex. Al terminar hablamos 5 minutos.\"",
+              "mediumTerm": "Descubres un puente de apoyo en el colegio y evitas un problema disciplinario.",
+              "mathScoreNote": "Balance Relacional: Pedir retroalimentación multiplica tus aliados en el aula."
+            },
+            "negative": {
+              "immediate": "Silencio tenso en el aula y citación a orientación por falta de respeto.",
+              "mediumTerm": "Tu frustración académica se suma a la carga familiar.",
+              "mathScoreNote": "Balance Relacional: Desahogo impulsivo = 2s | Costo = Deterioro del vínculo docente."
+            }
+          }
+        },
+        {
+          "id": "d2_patio_exclusion",
+          "locationLabel": "Colegio · Patio de recreo (Descanso)",
+          "bgKey": "bg_colegio_exterior",
+          "bgTint": "0xffffff",
+          "characterKey": "sofia",
+          "characterName": "Sofía y Mateo (Pares)",
+          "introLines": [
+            "En el descanso, varios compañeros arman grupos para preparar una exposición.",
+            "Cuando te acercas, Mateo hace un gesto para cerrarte el paso mientras Sofía observa atenta."
+          ],
+          "provocation": {
+            "speaker": "Mateo",
+            "text": "\"Este grupo ya está completo. Mejor quédate solo allá en la esquina, que tú siempre dañas el ambiente.\""
+          },
+          "pauseTip": {
+            "scienceNote": "Ciencia STEAM: La exclusión activa respuestas de alerta. Pausar te permite buscar aliados sanos como Sofía en vez de pelear.",
+            "breathHint": "Respira profundo antes de responder al rechazo."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · ¿Qué ocurre realmente en esta situación grupal?",
+            "options": [
+              {
+                "text": "Mateo intenta controlar el grupo imponiéndose, mientras Sofía está dispuesta a mediar.",
+                "isCorrect": true,
+                "feedback": "¡Buena lectura del entorno! Identificar redes de apoyo suma +1 Autocuidado."
+              },
+              {
+                "text": "Nadie en este colegio quiere trabajar conmigo jamás.",
+                "isCorrect": false,
+                "feedback": "Pensamiento todo-o-nada: te aísla y sube tu Tensión (+10%)."
+              },
+              {
+                "text": "Sofía también se está burlando de mí en silencio.",
+                "isCorrect": false,
+                "feedback": "La desconfianza extrema aleja a tus posibles aliados (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"¡Mándalos a volar a todos! No necesitas a nadie, mejor quédate solo y míralos feo.\"",
+            "refutations": [
+              {
+                "text": "No tengo que aislarme por la actitud de Mateo; puedo conversar con Sofía y proponer acuerdos.",
+                "isCorrect": true,
+                "feedback": "¡Sombra regulada! Elegiste la red de apoyo en vez del resentimiento."
+              },
+              {
+                "text": "Sí, mejor les digo que su trabajo va a quedar horrible sin mí.",
+                "isCorrect": false,
+                "feedback": "Atacar de vuelta solo valida la etiqueta que Mateo te quiere poner."
+              },
+              {
+                "text": "Me voy corriendo al baño para que nadie me vea solo.",
+                "isCorrect": false,
+                "feedback": "Evadir el espacio aumenta la sensación de vulnerabilidad."
+              }
+            ],
+            "failOutcome": "Alex lanza un insulto al grupo y se retira furioso a la esquina del patio."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Dirígete al grupo y a Sofía con firmeza y apertura:",
+            "slots": {
+              "hecho": [
+                { "text": "Cuando dices delante del grupo que daño el ambiente sin haber trabajado juntos...", "valid": true },
+                { "text": "Como eres un envidioso que siempre manipula a los demás...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...me siento excluido y frustrado porque quiero aportar...", "valid": true },
+                { "text": "...me da asco trabajar con gente tan falsa...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...les pido que nos repartamos una parte justa o me integro con Sofía.", "valid": true },
+                { "text": "...o me meten a la fuerza o le digo al profe que no me dejan.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "Sofía interviene: \"Claro que hay espacio, Alex. Ven y coordinamos los temas de la cartelera.\"",
+              "mediumTerm": "Rompes el aislamiento y demuestras que la convivencia se construye con límites claros.",
+              "mathScoreNote": "Balance Relacional: Apoyarte en pares mediadores eleva la cohesión del curso."
+            },
+            "negative": {
+              "immediate": "Discusión ruidosa; el grupo se cierra aún más y Sofía queda sin margen para ayudar.",
+              "mediumTerm": "Terminas el descanso aislado y con rabia acumulada.",
+              "mathScoreNote": "Balance Relacional: Impulsividad = pérdida de red de apoyo escolar."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "dayName": "Miércoles",
+      "subtitle": "Roce en la cancha y refugio en orientación",
+      "diary": {
+        "id": 3,
+        "title": "Página 3 · Pedir ayuda también es fuerza",
+        "reflection": "En la competencia física la adrenalina sube rápido. Reconocer mis señales corporales a tiempo evita golpes, y hablar en orientación sobre lo que pasa en casa me recuerda que no estoy solo.",
+        "scienceFact": "Dato STEAM (Ciencia): El ejercicio intenso eleva la frecuencia cardíaca; distinguir entre excitación física y rabia evita confundir un roce deportivo con un ataque personal.",
+        "toolTip": "Técnica del día: Ruta de apoyo institucional (orientación escolar) y pausas corporales."
+      },
+      "scenes": [
+        {
+          "id": "d3_cancha_deporte",
+          "locationLabel": "Colegio · Cancha múltiple (Educación Física)",
+          "bgKey": "bg_colegio_exterior",
+          "bgTint": "0xfff5e6",
+          "characterKey": "mateo",
+          "characterName": "Mateo (En tu equipo)",
+          "introLines": [
+            "Clase de Educación Física. Por sorteo, quedas en el mismo equipo de baloncesto que Mateo.",
+            "Falla un pase rápido tuyo y el equipo contrario anota. Mateo se te viene encima gritando."
+          ],
+          "provocation": {
+            "speaker": "Mateo",
+            "text": "\"¡¿Eres ciego o qué?! ¡Por tu culpa vamos perdiendo! ¡Si no sabes jugar, salte de la cancha!\""
+          },
+          "pauseTip": {
+            "scienceNote": "Ciencia STEAM: Con el pulso acelerado por el deporte, es fácil confundir adrenalina con ira. Regula tu respiración 4s/6s.",
+            "breathHint": "Baja las pulsaciones antes de contestarle a Mateo."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · ¿Qué detona la explosión de Mateo en el partido?",
+            "options": [
+              {
+                "text": "Su frustración por perder y la presión de lucirse ante el curso.",
+                "isCorrect": true,
+                "feedback": "¡Acertado! La frustración competitiva no es excusa para gritarte (+1 Autocuidado)."
+              },
+              {
+                "text": "Planeó el pase malo para culparme.",
+                "isCorrect": false,
+                "feedback": "Esa idea sube tu paranoia y tu Tensión Interna (+10%)."
+              },
+              {
+                "text": "Es imposible cooperar con nadie en este salón.",
+                "isCorrect": false,
+                "feedback": "Cerrar la puerta al diálogo dificulta el trabajo en equipo (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"¡Tírale el balón a la cara! Que sepa que en la cancha nadie te grita así.\"",
+            "refutations": [
+              {
+                "text": "Un pelotazo me saca del partido y escala una pelea; puedo frenar el grito sin golpear.",
+                "isCorrect": true,
+                "feedback": "¡Gran control! Canalizaste la adrenalina hacia una respuesta firme."
+              },
+              {
+                "text": "Le empujo el hombro al pasar para que se calme.",
+                "isCorrect": false,
+                "feedback": "El contacto físico agresivo convierte un error de juego en una riña."
+              },
+              {
+                "text": "Me siento en la gradería a llorar de rabia.",
+                "isCorrect": false,
+                "feedback": "Abandonar sin expresar tu límite deja sin resolver el trato."
+              }
+            ],
+            "failOutcome": "Alex lanza el balón con fuerza contra Mateo y el docente detiene el partido."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Pide respeto en la cancha usando Comunicación No Violenta:",
+            "slots": {
+              "hecho": [
+                { "text": "Mateo, cuando me gritas insultos por fallar un pase...", "valid": true },
+                { "text": "Mateo, como siempre eres un bocón que tampoco mete una...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...me desconcentro y me siento irrespetado en el equipo...", "valid": true },
+                { "text": "...me provocas ganas de dejarte tirado en pleno juego...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...te pido que corrijamos la jugada hablando bien para poder ganar.", "valid": true },
+                { "text": "...cállate la boca si no quieres problemas afuera.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "Mateo frunce el ceño, respira y responde seco: \"Bueno, pásala más abierto la próxima.\"",
+              "mediumTerm": "Logran terminar el partido sin golpes y el profesor felicita la actitud del grupo.",
+              "mathScoreNote": "Balance Relacional: Cooperar bajo presión duplica el retorno de convivencia."
+            },
+            "negative": {
+              "immediate": "El partido se suspende por agresión verbal/física y citan a ambos en orientación.",
+              "mediumTerm": "La tensión del colegio se suma a la preocupación por llegar a casa.",
+              "mathScoreNote": "Balance Relacional: Violencia reactiva = pérdida total del juego colectivo."
+            }
+          }
+        },
+        {
+          "id": "d3_orientacion_apoyo",
+          "locationLabel": "Colegio · Oficina de orientación",
+          "bgKey": "bg_orientacion",
+          "bgTint": "0xffffff",
+          "characterKey": "profe_ricardo",
+          "characterName": "Profe Ricardo (Orientador)",
+          "introLines": [
+            "Al finalizar la jornada, pasas por la oficina de orientación escolar.",
+            "El Profe Ricardo nota tus hombros tensos y te invita a sentarte un momento."
+          ],
+          "provocation": {
+            "speaker": "Profe Ricardo",
+            "text": "\"Alex, he visto que haces un gran esfuerzo por mantener la calma, pero pareces cargar un peso enorme. ¿Todo bien en casa?\""
+          },
+          "pauseTip": {
+            "scienceNote": "Ciencia STEAM: Verbalizar una emoción difícil (etiquetado afectivo) disminuye la activación de la amígdala en segundos.",
+            "breathHint": "Toma aire y permítete confiar en un espacio seguro."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · ¿Qué significa esta pregunta en un espacio seguro?",
+            "options": [
+              {
+                "text": "Busca abrir una red de apoyo y orientación sin juzgar a mi familia.",
+                "isCorrect": true,
+                "feedback": "¡Así es! Identificar aliados institucionales suma +1 Energía de Autocuidado."
+              },
+              {
+                "text": "Quiere sacar información para castigarme o meterme en líos.",
+                "isCorrect": false,
+                "feedback": "Ver toda ayuda como trampa perpetúa el aislamiento (+10% Tensión)."
+              },
+              {
+                "text": "Solo pregunta por cumplir con un formato.",
+                "isCorrect": false,
+                "feedback": "Desconfiar de la escucha genuina te quita herramientas (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"¡Cállate! Los trapos sucios se lavan en casa. Si cuentas lo de los gritos, parecerás débil.\"",
+            "refutations": [
+              {
+                "text": "Hablar con un orientador no es traición ni debilidad; es cuidarme y buscar herramientas.",
+                "isCorrect": true,
+                "feedback": "¡Sombra aclarada! Rompiste el silencio impuesto por el miedo."
+              },
+              {
+                "text": "Cierto, mejor le digo que todo está perfecto y me voy rápido.",
+                "isCorrect": false,
+                "feedback": "Negar lo que pesa impide recibir pautas de autocuidado."
+              },
+              {
+                "text": "Le contesto molesto que no se meta en mi vida privada.",
+                "isCorrect": false,
+                "feedback": "Rechazar agresivamente al orientador cierra una ruta clave de apoyo."
+              }
+            ],
+            "failOutcome": "Alex cierra la conversación bruscamente y sale cargando solo con todo."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Expresa con honestidad y calma lo que vives:",
+            "slots": {
+              "hecho": [
+                { "text": "Profe, últimamente en casa discutimos mucho a gritos por el estrés del trabajo...", "valid": true },
+                { "text": "Nadie en este mundo entiende nada y mi casa es un infierno...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...y me siento agotado y con miedo de explotar aquí en el colegio...", "valid": true },
+                { "text": "...y ya no me importa si me expulsan o qué pase...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...me gustaría recibir estrategias para manejar la tensión y hablar con mi mamá.", "valid": true },
+                { "text": "...así que no me haga más preguntas porque no sirve de nada.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "El Profe Ricardo toma nota con respeto y te enseña pautas de autocuidado y acuerdos familiares.",
+              "mediumTerm": "Sales aliviado: ya sabes que pedir apoyo institucional es parte de la solución.",
+              "mathScoreNote": "Balance Relacional: Activar redes de apoyo estabiliza todo tu sistema de convivencia."
+            },
+            "negative": {
+              "immediate": "El encuentro termina frío y sin acuerdos.",
+              "mediumTerm": "Sigues cargando en soledad la tensión entre el hogar y el aula.",
+              "mathScoreNote": "Balance Relacional: Aislamiento voluntario = mayor vulnerabilidad ante la Sombra."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "dayName": "Jueves",
+      "subtitle": "Rumores a la salida y diálogo a solas",
+      "diary": {
+        "id": 4,
+        "title": "Página 4 · Reescribir la voz interior",
+        "reflection": "La voz más difícil de calmar no está afuera, sino dentro de mi cabeza cuando me quedo solo en mi cuarto. Cuestionar la idea de que 'el fuerte es el que grita' transforma mi Sombra en protección sana.",
+        "scienceFact": "Dato STEAM (Ciencia): La reestructuración cognitiva consiste en detectar pensamientos automáticos distorsionados y reemplazarlos por evidencias reales.",
+        "toolTip": "Técnica del día: Detectar ironías/rumores sin engancharse y debatir el diálogo interno."
+      },
+      "scenes": [
+        {
+          "id": "d4_rumores_salida",
+          "locationLabel": "Colegio · Salida y pasillo (Tarde)",
+          "bgKey": "bg_colegio_interior",
+          "bgTint": "0xffe8d6",
+          "characterKey": "mateo",
+          "characterName": "Mateo (Rumores en grupo)",
+          "introLines": [
+            "Hora de salida. Alguien ha estado regando el chisme de que tuviste problemas en orientación.",
+            "Mateo te lanza una risa irónica frente a la puerta cuando pasas con tu maleta."
+          ],
+          "provocation": {
+            "speaker": "Mateo",
+            "text": "\"¿Ahora vas a llorar donde el psicólogo cada vez que te hablan duro, o ya aprendiste a defenderte?\""
+          },
+          "pauseTip": {
+            "scienceNote": "Ciencia STEAM: La provocación irónica busca que pierdas el control frente a testigos. Pausa 4s para elegir dignidad sobre impulso.",
+            "breathHint": "Respira hondo; no muerdas el anzuelo del sarcasmo."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · ¿Por qué Mateo usa la burla sobre ir a orientación?",
+            "options": [
+              {
+                "text": "Repite el prejuicio de que pedir ayuda es de débiles para provocarme.",
+                "isCorrect": true,
+                "feedback": "¡Lectura precisa! Desmontar el prejuicio te otorga +1 Autocuidado."
+              },
+              {
+                "text": "Sabe todo lo que hablé en privado con el orientador.",
+                "isCorrect": false,
+                "feedback": "El miedo irracional dispara tu Tensión Interna (+10%)."
+              },
+              {
+                "text": "Tiene razón: ir a orientación fue un error.",
+                "isCorrect": false,
+                "feedback": "Dudar de tu autocuidado debilita tus avances (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"¡Búrlate de su vida también! Di algo hiriente de su familia delante de todos para callarlo.\"",
+            "refutations": [
+              {
+                "text": "Herir con chismes personales me convierte en lo mismo que quiero romper; respondo con altura.",
+                "isCorrect": true,
+                "feedback": "¡Sombra transmutada! Elegiste la integridad sobre la humillación ajena."
+              },
+              {
+                "text": "Voy a gritarle sus defectos para que sienta lo mismo.",
+                "isCorrect": false,
+                "feedback": "El contraataque verbal alimenta la guerra de rumores."
+              },
+              {
+                "text": "Salgo corriendo sin mirar atrás.",
+                "isCorrect": false,
+                "feedback": "Huir sin cerrar el límite deja el rumor abierto."
+              }
+            ],
+            "failOutcome": "Alex lanza un comentario hiriente sobre Mateo y ambos terminan rodeados de gritos."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Desactiva la burla con calma y seguridad:",
+            "slots": {
+              "hecho": [
+                { "text": "Mateo, al burlarte de que busque orientación para resolver problemas...", "valid": true },
+                { "text": "Mateo, tú hablas porque en tu casa seguro te tratan peor...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...me incomoda que intentes ridiculizar algo que me ayuda...", "valid": true },
+                { "text": "...me das lástima por lo ignorante que eres...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...te pido que respetes mis asuntos y no difundas rumores.", "valid": true },
+                { "text": "...métete en tu vida antes de que te calle de verdad.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "Varios compañeros asienten en silencio; Mateo pierde el público y se calla incómodo.",
+              "mediumTerm": "El rumor se apaga ese mismo día porque no encontró pelea que lo alimentara.",
+              "mathScoreNote": "Balance Relacional: Desactivar el chisme protege tu capital social."
+            },
+            "negative": {
+              "immediate": "Intercambio de insultos personales que escala rápidamente.",
+              "mediumTerm": "Los rumores crecen al día siguiente y llegas agotado a tu cuarto.",
+              "mathScoreNote": "Balance Relacional: Contraataque = combustible para el conflicto futuro."
+            }
+          }
+        },
+        {
+          "id": "d4_cuarto_sombra",
+          "locationLabel": "Hogar · Cuarto de Alex (Noche)",
+          "bgKey": "bg_cuarto",
+          "bgTint": "0xcbd5e1",
+          "characterKey": "sombra_hostil",
+          "characterName": "La Sombra (Diálogo interno)",
+          "introLines": [
+            "10:00 p.m. Silencio en tu habitación. Solo la lámpara del escritorio ilumina tu cuaderno.",
+            "La Sombra se proyecta grande sobre la pared, cuestionando cada decisión pacífica que tomaste."
+          ],
+          "provocation": {
+            "speaker": "La Sombra",
+            "text": "\"¿De qué te sirve hablar bonito si mañana igual te van a gritar en casa o a molestar afuera? ¡Vuelve a armarte con rabia!\""
+          },
+          "pauseTip": {
+            "scienceNote": "Ciencia STEAM: A solas aparecen los pensamientos rumiativos. Respirar lento estabiliza tu variabilidad cardíaca antes de dormir.",
+            "breathHint": "Calma tu respiración para dialogar con tu propia mente."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · ¿Qué intenta hacer realmente La Sombra cuando te exige volver a la rabia?",
+            "options": [
+              {
+                "text": "Intenta protegerme del dolor usando la única armadura agresiva que aprendió.",
+                "isCorrect": true,
+                "feedback": "¡Comprensión profunda! La Sombra nace del miedo, no de maldad (+1 Autocuidado)."
+              },
+              {
+                "text": "Demuestra que soy una persona violenta sin remedio.",
+                "isCorrect": false,
+                "feedback": "Etiquetarte de forma negativa aumenta tu Tensión (+10%)."
+              },
+              {
+                "text": "Tiene razón: la paz nunca funciona en la vida real.",
+                "isCorrect": false,
+                "feedback": "Rendirte ante el pesimismo borra tu progreso (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"¡Sin mí eres un blanco fácil! Prométeme que mañana vas a responder golpe por golpe.\"",
+            "refutations": [
+              {
+                "text": "Gracias por querer cuidarme, pero ya sé defenderme con límites claros y sin herir a nadie.",
+                "isCorrect": true,
+                "feedback": "¡Transformación clave! La Sombra suaviza sus bordes y empieza a ser aliada."
+              },
+              {
+                "text": "Está bien, mañana no le paso ni una a nadie.",
+                "isCorrect": false,
+                "feedback": "Vuelves a activar la armadura agresiva."
+              },
+              {
+                "text": "Ojalá desapareciera todo y no tuviera que hablar con nadie.",
+                "isCorrect": false,
+                "feedback": "La evasión total deja el miedo sin transformar."
+              }
+            ],
+            "failOutcome": "La noche termina con insomnio y la Sombra vigilando inquieta."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Escribe en tu diario un acuerdo asertivo contigo mismo:",
+            "slots": {
+              "hecho": [
+                { "text": "Aunque he vivido gritos y roces durante toda la semana...", "valid": true },
+                { "text": "Como el mundo es una porquería y nadie cambia jamás...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...siento miedo de salir herido, pero también alivio al no pelear...", "valid": true },
+                { "text": "...siento que ser amable es perder el tiempo...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...me comprometo a pausar, cuidarme y usar palabras firmes mañana.", "valid": true },
+                { "text": "...mañana devuelvo cada golpe más fuerte.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "El halo de La Sombra se torna dorado y sereno junto a tu escritorio.",
+              "mediumTerm": "Descansas en paz y llegas al viernes con claridad para el cierre de la semana.",
+              "mathScoreNote": "Balance Relacional: Reestructurar tu diálogo interno multiplica la resiliencia."
+            },
+            "negative": {
+              "immediate": "La sombra permanece oscura y tensa sobre la pared.",
+              "mediumTerm": "Despiertas cansado y reactivo para el último día de clases.",
+              "mathScoreNote": "Balance Relacional: Rumiar hostilidad consume energía antes de empezar el día."
+            }
+          }
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "dayName": "Viernes",
+      "subtitle": "El eco transformado: cierre en aula y hogar",
+      "diary": {
+        "id": 5,
+        "title": "Página 5 · Del grito a la palabra",
+        "reflection": "El eco de la violencia se detiene cuando una persona decide responder distinto. No puedo controlar siempre el cansancio de los demás, pero sí puedo elegir cuidar mis vínculos con respeto y firmeza.",
+        "scienceFact": "Dato STEAM (Síntesis): Has comprobado en 5 jornadas cómo pequeñas decisiones de pausa cambian por completo la tendencia de un sistema relacional complejo.",
+        "toolTip": "Técnica del día: Integrar Empatía + Sombra Protectora + Comunicación No Violenta en la vida diaria."
+      },
+      "scenes": [
+        {
+          "id": "d5_patio_cierre",
+          "locationLabel": "Colegio · Patio de recreo (Viernes)",
+          "bgKey": "bg_colegio_exterior",
+          "bgTint": "0xffffff",
+          "characterKey": "mateo",
+          "characterName": "Mateo (Última confrontación)",
+          "introLines": [
+            "Viernes por la tarde. Mateo se cruza contigo en el patio por última vez esta semana.",
+            "Parece molesto porque ya nadie le sigue el juego de las burlas."
+          ],
+          "provocation": {
+            "speaker": "Mateo",
+            "text": "\"¿Te crees muy superior ahora porque hablas calmado? Vamos a ver si afuera aguantas sin correr donde el profe.\""
+          },
+          "pauseTip": {
+            "scienceNote": "Ciencia STEAM: Con práctica repetida, tu cerebro consolida nuevas rutas neuronales de autorregulación (neuroplasticidad).",
+            "breathHint": "Respira firme; ya dominas el semáforo de Valentic."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · ¿Qué está pasando con Mateo hoy?",
+            "options": [
+              {
+                "text": "Pierde el rol de intimidador que usaba para sentirse seguro y no sabe cómo relacionarse distinto.",
+                "isCorrect": true,
+                "feedback": "¡Excelente análisis empático! Ganas +1 Energía de Autocuidado."
+              },
+              {
+                "text": "Quiere pelear porque me odia sin motivo.",
+                "isCorrect": false,
+                "feedback": "Reducirlo a simple maldad te tienta a contraatacar (+10% Tensión)."
+              },
+              {
+                "text": "Nunca va a dejar de molestarme haga lo que haga.",
+                "isCorrect": false,
+                "feedback": "El fatalismo te quita seguridad (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"Es tu última oportunidad para cobrárselas todas juntas... ¿o vas a mantener tu nueva fuerza?\"",
+            "refutations": [
+              {
+                "text": "Mi verdadera fuerza es no caer en su provocación y cerrar este ciclo en paz.",
+                "isCorrect": true,
+                "feedback": "¡La Sombra brilla a tu lado como protectora serena!"
+              },
+              {
+                "text": "Le digo que nos vemos a la salida para arreglarlo a golpes.",
+                "isCorrect": false,
+                "feedback": "Ceder al final echa atrás el camino recorrido."
+              },
+              {
+                "text": "Me quedo callado temblando sin responder nada.",
+                "isCorrect": false,
+                "feedback": "El miedo silencioso no marca el límite necesario."
+              }
+            ],
+            "failOutcome": "La semana escolar cierra con una discusión tensa en el patio."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Cierra el conflicto escolar con claridad y respeto:",
+            "slots": {
+              "hecho": [
+                { "text": "Mateo, cuando me retas a pelear porque elijo hablar con calma...", "valid": true },
+                { "text": "Mateo, ya das pereza con tus amenazas baratas de siempre...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...no me siento superior, solo cansado de pelear por nada...", "valid": true },
+                { "text": "...me provoca demostrarte quién manda aquí...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...te propongo dejar los choques atrás y respetarnos en el curso.", "valid": true },
+                { "text": "...desaparece de mi vista si no quieres problemas.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "Mateo guarda silencio unos segundos, baja las manos y murmura: \"Como sea... nos vemos el lunes.\"",
+              "mediumTerm": "Sofía sonríe desde la entrada: el ciclo de hostilidad en el aula se ha roto.",
+              "mathScoreNote": "Balance Relacional: Devolver calma ante la provocación transforma el clima grupal."
+            },
+            "negative": {
+              "immediate": "Último choque verbal en el patio antes de salir hacia casa.",
+              "mediumTerm": "Cierras la semana escolar con tensión pendiente.",
+              "mathScoreNote": "Balance Relacional: La reactividad final reduce tu margen de paz."
+            }
+          }
+        },
+        {
+          "id": "d5_sala_atardecer",
+          "locationLabel": "Hogar · Sala al atardecer (Cierre final)",
+          "bgKey": "bg_hogar",
+          "bgTint": "0xffcfa8",
+          "characterKey": "elena",
+          "characterName": "Elena (Mamá) · Atardecer",
+          "introLines": [
+            "Viernes al atardecer. Una luz cálida entra por la ventana de la sala.",
+            "Elena sostiene un aviso escolar del lunes que acaba de leer tras una jornada agotadora. Sus ojos reflejan cansancio y susto."
+          ],
+          "provocation": {
+            "speaker": "Elena",
+            "text": "\"¡Alex! ¿Qué es este aviso de convivencia que llegó en tu agenda? ¡Yo me mato trabajando todo el día para que me salgas con problemas!\""
+          },
+          "pauseTip": {
+            "scienceNote": "Ciencia STEAM: Este es el punto de quiebre del sistema familiar. Tu calma parasimpática puede co-regular a la otra persona.",
+            "breathHint": "Respira hondo junto a tu Sombra serena antes de responder."
+          },
+          "decoder": {
+            "prompt": "Luz Amarilla · ¿Qué siente Elena realmente detrás de ese reclamo?",
+            "options": [
+              {
+                "text": "Miedo de no poder sola y angustia de que me pase algo malo en el colegio.",
+                "isCorrect": true,
+                "feedback": "¡Empatía total! Detrás del regaño hay preocupación y cansancio (+1 Autocuidado)."
+              },
+              {
+                "text": "Solo busca un pretexto para castigarme el fin de semana.",
+                "isCorrect": false,
+                "feedback": "Esa idea levanta de nuevo el muro entre ambos (+10% Tensión)."
+              },
+              {
+                "text": "No le importa nada de lo que yo vivo.",
+                "isCorrect": false,
+                "feedback": "Asumir indiferencia cierra el puente del diálogo (+10% Tensión)."
+              }
+            ]
+          },
+          "shadow": {
+            "whisper": "\"¿Vas a repetir el grito de siempre o vas a transformar el eco en palabra?\"",
+            "refutations": [
+              {
+                "text": "Puedo escuchar su preocupación, explicarle lo que ya resolví y hablarle con cariño y firmeza.",
+                "isCorrect": true,
+                "feedback": "¡Integración completa! La Sombra se funde contigo en serenidad."
+              },
+              {
+                "text": "Le grito que fue culpa de ella por hacerme salir bravo el lunes.",
+                "isCorrect": false,
+                "feedback": "Culpar al otro reabre el ciclo de hostilidad en el hogar."
+              },
+              {
+                "text": "Me encierro en el cuarto y tiro la puerta.",
+                "isCorrect": false,
+                "feedback": "El silencio roto deja sin resolver el vínculo familiar."
+              }
+            ],
+            "failOutcome": "La discusión vuelve a levantar un muro entre madre e hijo al final de la semana."
+          },
+          "cnv": {
+            "contextPrompt": "Luz Verde · Construye el diálogo final de buen trato con Elena:",
+            "slots": {
+              "hecho": [
+                { "text": "Mamá, sé que estás agotada y te asustó ver ese aviso del lunes...", "valid": true },
+                { "text": "Tú siempre me juzgas primero sin dejarme hablar nunca...", "valid": false }
+              ],
+              "sentimiento": [
+                { "text": "...cuando me gritas así me asusto y me cuesta explicarte lo que pasó...", "valid": true },
+                { "text": "...me da rabia que nunca confíes en mí...", "valid": false }
+              ],
+              "peticion": [
+                { "text": "...sentémonos a hablar con calma: ya lo solucioné y quiero ayudarte hoy en casa.", "valid": true },
+                { "text": "...así que deja el escándalo que ya no soy un niño.", "valid": false }
+              ]
+            }
+          },
+          "mirror": {
+            "positive": {
+              "immediate": "Elena baja la hoja, te mira con ojos húmedos y se sienta contigo en el sofá: \"Perdóname por gritar, hijo. Cuéntame cómo te fue esta semana.\"",
+              "mediumTerm": "Por primera vez, el eco de la violencia se detiene en el hogar para dar paso a la palabra.",
+              "mathScoreNote": "Balance Relacional Final: Rompiste el ciclo hogar -> aula -> hogar. ¡Sistema en armonía!"
+            },
+            "negative": {
+              "immediate": "Reproches cruzados mientras la tarde se vuelve fría en la sala.",
+              "mediumTerm": "Aún queda camino por recorrer para transformar el diálogo en casa.",
+              "mathScoreNote": "Balance Relacional: Puedes reintentar la jornada para lograr el desenlace asertivo."
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
