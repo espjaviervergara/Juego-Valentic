@@ -1,18 +1,19 @@
 import { BootScene } from './scenes/BootScene.js';
 import { MenuScene } from './scenes/MenuScene.js';
-import { TutorialScene } from './scenes/TutorialScene.js';
-import { GameScene } from './scenes/GameScene.js';
-import { DiaryScene } from './scenes/DiaryScene.js';
-import { ResultScene } from './scenes/ResultScene.js';
+import { PrologueScene } from './scenes/PrologueScene.js';
+import { WorldScene } from './scenes/WorldScene.js';
+import { VictoryScene } from './scenes/VictoryScene.js';
+import { MinigameScene } from './scenes/MinigameScene.js';
 
 const config = {
   type: Phaser.AUTO,
   parent: 'game-container',
   width: 960,
   height: 540,
-  backgroundColor: '#0d1321',
-  pixelArt: true,
+  backgroundColor: '#0b1120',
+  pixelArt: false,
   roundPixels: true,
+  antialias: true,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -20,11 +21,11 @@ const config = {
   scene: [
     BootScene,
     MenuScene,
-    TutorialScene,
-    GameScene,
-    DiaryScene,
-    ResultScene,
+    PrologueScene,
+    WorldScene,
+    VictoryScene,
+    MinigameScene,
   ],
 };
 
-window.ecosBivalentesGame = new Phaser.Game(config);
+window.valenticRpgGame = new Phaser.Game(config);

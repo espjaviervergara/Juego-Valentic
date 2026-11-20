@@ -2,37 +2,38 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ecos Bivalentes: Entre el Grito y el Eco — ValenTIC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>ValenTIC y el Semáforo de las Emociones — RPG</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <main class="game-shell">
-    <header class="game-topbar">
-      <div class="brand">
-        <span class="badge">STEAM · Grado 11°</span>
-        <h1>Ecos Bivalentes: Entre el Grito y el Eco</h1>
-      </div>
-      <div class="meta">Institución Educativa Ángela María Torres Suárez · ValenTIC</div>
-    </header>
-
-    <div id="game-container" class="game-container" aria-label="Lienzo del videojuego Ecos Bivalentes"></div>
+    <button id="fullscreen-toggle" class="fullscreen-toggle" title="Pantalla Completa" aria-label="Pantalla Completa">⛶</button>
+    <div id="game-container" class="game-container" aria-label="ValenTIC y el Semáforo de las Emociones"></div>
 
     <div id="protocol-warning" class="protocol-warning" hidden>
-      <strong>Importante:</strong> Para cargar los diálogos JSON y módulos JavaScript sin bloqueo de navegador,
-      abre el juego mediante un servidor local (por ejemplo <code>python3 -m http.server 8080</code> o Live Server)
-      o desde GitHub Pages.
+      <strong>Nota:</strong> Abre el juego con un servidor local (<code>python3 -m http.server 8080</code>) o desde GitHub Pages para cargar los mapas, voces y diálogos.
     </div>
-
-    <footer class="game-footer">
-      <span>Semáforo Emocional de Valentic: <strong>Rojo</strong> (Pausa) · <strong>Amarillo</strong> (Descodifica y Transmuta) · <strong>Verde</strong> (Comunica CNV)</span>
-      <span>Controles: Clic / Táctil · Barra espaciadora para Pausa Activa</span>
-    </footer>
   </main>
 
   <script>
     if (window.location.protocol === 'file:') {
       document.getElementById('protocol-warning').hidden = false;
+    }
+    const fsBtn = document.getElementById('fullscreen-toggle');
+    if (fsBtn) {
+      fsBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          const docEl = document.documentElement;
+          if (docEl.requestFullscreen) docEl.requestFullscreen();
+          else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+          fsBtn.innerHTML = '⛶';
+        } else {
+          if (document.exitFullscreen) document.exitFullscreen();
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+          fsBtn.innerHTML = '⛶';
+        }
+      });
     }
   </script>
   <script src="./lib/phaser.min.js"></script>

@@ -1,20 +1,20 @@
 import { gameState } from './GameState.js';
 
-const BGM_NORMAL_VOLUME = 0.16;
-const BGM_DUCKED_VOLUME = 0.05;
+const BGM_VOL = 0.14;
+const BGM_DUCK = 0.04;
 
 class SoundManager {
   constructor() {
     this.ctx = null;
     this.phaserSound = null;
     this.cacheAudio = null;
-    this.currentBgmKey = null;
-    this.currentBgm = null;
-    this.currentVoiceKey = null;
-    this.currentVoice = null;
+    this.bgmKey = null;
+    this.bgm = null;
+    this.voiceKey = null;
+    this.voice = null;
   }
 
-  attachPhaser(scene) {
+  attach(scene) {
     if (!scene) return;
     this.phaserSound = scene.sound;
     this.cacheAudio = scene.cache?.audio;
@@ -22,119 +22,110 @@ class SoundManager {
   }
 
   syncVolumes() {
-    const muted = gameState.progress.settings.muted;
-    const musicOn = gameState.progress.settings.musicEnabled;
-    const voiceOn = gameState.progress.settings.voiceEnabled;
-
-    if (this.currentBgm) {
-      if (muted || !musicOn) {
-        this.currentBgm.setVolume(0);
+    const muted = gameState.save.settings.muted;
+    const voiceOn = gameState.save.settings.voiceEnabled;
+    if (this.bgm) {
+      if (muted) {
+        this.bgm.setVolume(0);
       } else {
-        const isSpeaking = Boolean(this.currentVoice && this.currentVoice.isPlaying);
-        this.currentBgm.setVolume(isSpeaking ? BGM_DUCKED_VOLUME : BGM_NORMAL_VOLUME);
+        const speaking = Boolean(this.voice && this.voice.isPlaying);
+        this.bgm.setVolume(speaking ? BGM_DUCK : BGM_VOL);
       }
     }
-
-    if (this.currentVoice && (muted || !voiceOn)) {
+    if (this.voice && (muted || !voiceOn)) {
       this.stopVoice();
     }
   }
 
   playBGM(key) {
     if (!this.phaserSound || !this.cacheAudio?.exists(key)) return;
-    if (this.currentBgmKey === key && this.currentBgm) {
-      if (!this.currentBgm.isPlaying) {
-        this.currentBgm.play({ loop: true, volume: this.getTargetBgmVolume() });
+    if (this.bgmKey === key && this.bgm) {
+      if (!this.bgm.isPlaying) {
+        this.bgm.play({ loop: true, volume: gameState.save.settings.muted ? 0 : BGM_VOL });
       }
       this.syncVolumes();
       return;
     }
-
-    if (this.currentBgm) {
-      this.currentBgm.stop();
-      this.currentBgm.destroy();
-      this.currentBgm = null;
+    if (this.bgm) {
+      this.bgm.stop();
+      this.bgm.destroy();
+      this.bgm = null;
     }
-
-    this.currentBgmKey = key;
-    this.currentBgm = this.phaserSound.add(key, {
+    this.bgmKey = key;
+    this.bgm = this.phaserSound.add(key, {
       loop: true,
-      volume: this.getTargetBgmVolume(),
+      volume: gameState.save.settings.muted ? 0 : BGM_VOL,
     });
-    this.currentBgm.play();
-  }
-
-  getTargetBgmVolume() {
-    if (gameState.progress.settings.muted || !gameState.progress.settings.musicEnabled) {
-      return 0;
-    }
-    const isSpeaking = Boolean(this.currentVoice && this.currentVoice.isPlaying);
-    return isSpeaking ? BGM_DUCKED_VOLUME : BGM_NORMAL_VOLUME;
+    this.bgm.play();
   }
 
   stopVoice() {
-    if (this.currentVoice) {
-      this.currentVoice.off('complete');
-      if (this.currentVoice.isPlaying) {
-        this.currentVoice.stop();
-      }
-      this.currentVoice.destroy();
-      this.currentVoice = null;
+    if (this.voice) {
+      this.voice.off('complete');
+      if (this.voice.isPlaying) this.voice.stop();
+      this.voice.destroy();
+      this.voice = null;
     }
     this.syncVolumes();
   }
 
   playVoice(key, onComplete = null) {
-    if (!key) return;
-    this.currentVoiceKey = key;
+    if (!key) {
+      if (onComplete) onComplete();
+      return;
+    }
+    this.voiceKey = key;
     this.stopVoice();
 
     if (
-      gameState.progress.settings.muted
-      || !gameState.progress.settings.voiceEnabled
+      gameState.save.settings.muted
+      || !gameState.save.settings.voiceEnabled
       || !this.phaserSound
       || !this.cacheAudio?.exists(key)
     ) {
+      if (onComplete) onComplete();
       return;
     }
 
-    const voice = this.phaserSound.add(key, { volume: 0.95 });
-    this.currentVoice = voice;
+    const v = this.phaserSound.add(key, { volume: 0.95 });
+    this.voice = v;
     this.syncVolumes();
-
-    voice.once('complete', () => {
-      if (this.currentVoice === voice) {
-        this.currentVoice = null;
-        voice.destroy();
+    v.once('complete', () => {
+      if (this.voice === v) {
+        this.voice = null;
+        v.destroy();
         this.syncVolumes();
       }
       if (onComplete) onComplete();
     });
-
-    voice.play();
+    v.play();
   }
 
-  replayLastVoice() {
-    if (this.currentVoiceKey) {
-      this.playVoice(this.currentVoiceKey);
+  replayVoice() {
+    if (this.voiceKey) this.playVoice(this.voiceKey);
+  }
+
+  ensureCtx() {
+    if (gameState.save.settings.muted) return null;
+    const ctx = this.phaserSound?.context || this.ctx;
+    if (ctx) {
+      if (ctx.state === 'suspended') {
+        ctx.resume().catch(() => {});
+      }
+      return ctx;
     }
-  }
-
-  ensureContext() {
-    if (gameState.progress.settings.muted) return null;
     if (!this.ctx) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return null;
-      this.ctx = new AudioCtx();
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (Ctx) this.ctx = new Ctx();
     }
-    if (this.ctx.state === 'suspended') {
+    if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume().catch(() => {});
     }
     return this.ctx;
   }
 
-  tone(freq, duration = 0.12, type = 'square', volume = 0.08, delay = 0) {
-    const ctx = this.ensureContext();
+  tone(freq, dur = 0.1, type = 'triangle', vol = 0.07, delay = 0) {
+    const ctx = this.ensureCtx();
     if (!ctx) return;
     const now = ctx.currentTime + delay;
     const osc = ctx.createOscillator();
@@ -142,73 +133,62 @@ class SoundManager {
     osc.type = type;
     osc.frequency.setValueAtTime(freq, now);
     gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(volume, now + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    gain.gain.exponentialRampToValueAtTime(vol, now + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
     osc.connect(gain);
     gain.connect(ctx.destination);
     osc.start(now);
-    osc.stop(now + duration + 0.02);
+    osc.stop(now + dur + 0.02);
   }
 
-  playClick() {
-    this.tone(520, 0.06, 'square', 0.06);
+  playClick() { this.tone(540, 0.06, 'square', 0.05); }
+  playPickup() { this.tone(587, 0.08, 'triangle', 0.07, 0); this.tone(880, 0.12, 'triangle', 0.07, 0.07); }
+  playAlert() { this.tone(240, 0.14, 'sawtooth', 0.07, 0); this.tone(185, 0.18, 'sawtooth', 0.07, 0.14); }
+  playSparkOut() { this.tone(660, 0.09, 'sine', 0.07); }
+  playSuccess() { this.tone(523, 0.09, 'triangle', 0.07, 0); this.tone(659, 0.1, 'triangle', 0.07, 0.08); this.tone(784, 0.16, 'triangle', 0.08, 0.16); }
+  playError() { this.tone(220, 0.14, 'sawtooth', 0.07, 0); this.tone(165, 0.2, 'sawtooth', 0.07, 0.12); }
+  playTick() { this.tone(760, 0.04, 'triangle', 0.04); }
+  playStep() { this.tone(150, 0.03, 'sine', 0.02); }
+  playVictory() { [523, 659, 784, 1046].forEach((n, i) => this.tone(n, 0.2, 'triangle', 0.08, i * 0.1)); }
+
+  // Nuevos sonidos para minijuegos
+  playPop() {
+    const ctx = this.ensureCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(780, now + 0.07);
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.09);
   }
 
-  playAlert() {
-    this.tone(240, 0.14, 'sawtooth', 0.08, 0);
-    this.tone(190, 0.18, 'sawtooth', 0.08, 0.14);
+  playJump() {
+    const ctx = this.ensureCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(540, now + 0.1);
+    gain.gain.setValueAtTime(0.06, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.13);
   }
 
-  playTick() {
-    this.tone(760, 0.04, 'triangle', 0.05);
-  }
-
-  playBreatheIn() {
-    this.tone(260, 0.28, 'sine', 0.06, 0);
-    this.tone(330, 0.35, 'sine', 0.06, 0.18);
-  }
-
-  playBreatheOut() {
-    this.tone(392, 0.25, 'sine', 0.06, 0);
-    this.tone(294, 0.4, 'sine', 0.05, 0.2);
-  }
-
-  playSuccess() {
-    this.tone(523.25, 0.1, 'triangle', 0.08, 0);
-    this.tone(659.25, 0.12, 'triangle', 0.08, 0.09);
-    this.tone(783.99, 0.18, 'triangle', 0.09, 0.18);
-  }
-
-  playTransmute() {
-    this.tone(392, 0.1, 'sine', 0.08, 0);
-    this.tone(493.88, 0.1, 'sine', 0.08, 0.08);
-    this.tone(587.33, 0.12, 'sine', 0.08, 0.16);
-    this.tone(783.99, 0.24, 'triangle', 0.09, 0.24);
-  }
-
-  playBlockSnap() {
-    this.tone(440, 0.07, 'triangle', 0.07);
-  }
-
-  playDiaryPage() {
-    this.tone(587.33, 0.08, 'sine', 0.07, 0);
-    this.tone(783.99, 0.14, 'sine', 0.07, 0.07);
-  }
-
-  playError() {
-    this.tone(220, 0.14, 'sawtooth', 0.08, 0);
-    this.tone(165, 0.22, 'sawtooth', 0.08, 0.12);
-  }
-
-  playBreakdown() {
-    this.tone(260, 0.16, 'sawtooth', 0.09, 0);
-    this.tone(210, 0.16, 'sawtooth', 0.09, 0.15);
-    this.tone(145, 0.32, 'sawtooth', 0.09, 0.3);
-  }
-
-  playDayWin() {
-    const notes = [523.25, 659.25, 783.99, 1046.5];
-    notes.forEach((n, idx) => this.tone(n, 0.22, 'triangle', 0.09, idx * 0.11));
+  playGlow() {
+    this.tone(784, 0.1, 'sine', 0.06, 0);
+    this.tone(1046, 0.14, 'sine', 0.06, 0.06);
   }
 }
 

@@ -8,89 +8,161 @@ export class BootScene extends Phaser.Scene {
 
   preload() {
     const { width, height } = this.scale;
-
-    this.add.rectangle(width / 2, height / 2, width, height, 0x0d1321);
-    this.add.text(width / 2, height / 2 - 42, 'Ecos Bivalentes: Entre el Grito y el Eco', {
+    this.add.rectangle(width / 2, height / 2, width, height, 0x0b1120);
+    this.add.text(width / 2, height / 2 - 38, 'ValenTIC y el Semáforo de las Emociones', {
       fontFamily: 'Trebuchet MS, sans-serif',
-      fontSize: '22px',
+      fontSize: '23px',
       fontStyle: 'bold',
       color: '#f8fafc',
     }).setOrigin(0.5);
 
-    const track = this.add.rectangle(width / 2, height / 2 + 8, 360, 18, 0x1e293b);
-    track.setStrokeStyle(2, 0x475569);
-    const bar = this.add.rectangle(width / 2 - 176, height / 2 + 8, 4, 12, 0x38bdf8).setOrigin(0, 0.5);
-    const label = this.add.text(width / 2, height / 2 + 36, 'Cargando gráficos, música y voces...', {
+    const track = this.add.rectangle(width / 2, height / 2 + 8, 340, 16, 0x1e293b).setStrokeStyle(2, 0x475569);
+    const bar = this.add.rectangle(width / 2 - 166, height / 2 + 8, 4, 10, 0x38bdf8).setOrigin(0, 0.5);
+    const label = this.add.text(width / 2, height / 2 + 36, 'Cargando mundo RPG...', {
       fontFamily: 'Trebuchet MS, sans-serif',
       fontSize: '13px',
       color: '#94a3b8',
     }).setOrigin(0.5);
 
-    this.load.on('progress', (val) => {
-      bar.width = Math.max(4, 352 * val);
-      label.setText(`Cargando gráficos, música y voces... ${Math.round(val * 100)}%`);
+    this.load.on('progress', (v) => {
+      bar.width = Math.max(4, 332 * v);
+      label.setText(`Cargando mundo RPG... ${Math.round(v * 100)}%`);
     });
 
-    // Base de datos narrativa y encolado dinámico de voces de escenas
-    this.load.once('filecomplete-json-dialogues', (_key, _type, data) => {
-      if (!data?.days) return;
-      data.days.forEach((day) => {
-        day.scenes.forEach((sc) => {
-          const sid = sc.id;
-          sc.introLines.forEach((_, idx) => {
-            this.load.audio(`${sid}_intro_${idx}`, `./assets/audio/voices/${sid}_intro_${idx}.mp3`);
-          });
-          this.load.audio(`${sid}_prov`, `./assets/audio/voices/${sid}_prov.mp3`);
-          this.load.audio(`${sid}_shadow`, `./assets/audio/voices/${sid}_shadow.mp3`);
-          this.load.audio(`${sid}_cnv_clean`, `./assets/audio/voices/${sid}_cnv_clean.mp3`);
-          this.load.audio(`${sid}_mirror_pos`, `./assets/audio/voices/${sid}_mirror_pos.mp3`);
-          this.load.audio(`${sid}_mirror_neg`, `./assets/audio/voices/${sid}_mirror_neg.mp3`);
+    this.load.json('rpg_story', './src/data/rpg_story.json');
+
+    // Tileset crisp 48x48 (3x de 16x16)
+    this.load.image('rpg_tileset', './assets/tilesets/rpg_tileset.png');
+
+    // Mascota oficial de Valentic en Alta Definición
+    this.load.image('valentic', './assets/sprites/valentic_hd.png');
+    this.load.image('valentic_hd', './assets/sprites/valentic_hd.png');
+
+    // Spritesheets RPG 4 direcciones x 3 frames (48x72 cada frame)
+    [
+      'rpg_alex',
+      'rpg_elena',
+      'rpg_mateo',
+      'rpg_sofia',
+      'rpg_ricardo',
+      'rpg_sombra_hostil',
+      'rpg_sombra_calma',
+    ].forEach((key) => {
+      this.load.spritesheet(key, `./assets/sprites/${key}.png`, {
+        frameWidth: 48,
+        frameHeight: 72,
+      });
+    });
+
+    // Retratos Pixel Art nítidos (96x96)
+    [
+      'portrait_alex_tense',
+      'portrait_alex_calm',
+      'portrait_elena',
+      'portrait_mateo',
+      'portrait_sofia',
+      'portrait_ricardo',
+      'portrait_sombra_hostil',
+      'portrait_sombra_calma',
+    ].forEach((pk) => {
+      this.load.image(pk, `./assets/sprites/${pk}.png`);
+    });
+
+    // Música ambiental
+    ['bgm_menu', 'bgm_hogar', 'bgm_colegio', 'bgm_tenso'].forEach((bk) => {
+      this.load.audio(bk, `./assets/audio/bgm/${bk}.m4a`);
+    });
+
+    // Voces RPG · Día 1 y Tutorial (AAC M4A con fallback MP3)
+    [
+      'pro_1', 'pro_2', 'pro_3', 'pro_4',
+      'tut_welcome', 'tut_backpack', 'tut_mirror_prompt', 'tut_mirror_done', 'tut_door_hint',
+      'npc_sofia', 'npc_sofia_patio', 'npc_ricardo', 'diary_p1',
+      'valentic_green_guide', 'valentic_victory',
+      'hogar_elena_prov', 'hogar_elena_red_tip', 'hogar_elena_dec_prompt',
+      'hogar_elena_shadow', 'hogar_elena_cnv_clean', 'hogar_elena_good', 'hogar_elena_bad',
+      'colegio_mateo_prov', 'colegio_mateo_red_tip', 'colegio_mateo_dec_prompt',
+      'colegio_mateo_shadow', 'colegio_mateo_cnv_clean', 'colegio_mateo_good', 'colegio_mateo_bad',
+      'colegio_aula_prov', 'colegio_aula_red_tip', 'colegio_aula_dec_prompt',
+      'colegio_aula_shadow', 'colegio_aula_cnv_clean', 'colegio_aula_good', 'colegio_aula_bad',
+      'colegio_patio_prov', 'colegio_patio_red_tip', 'colegio_patio_dec_prompt',
+      'colegio_patio_shadow', 'colegio_patio_cnv_clean', 'colegio_patio_good', 'colegio_patio_bad',
+    ].forEach((vk) => {
+      this.load.audio(vk, [
+        `./assets/audio/voices/${vk}.m4a`,
+        `./assets/audio/voices/${vk}.mp3`,
+      ]);
+    });
+
+    // Voces RPG · Días 2 al 5 y Diarios (AAC M4A en alta fidelidad)
+    [
+      'diary_p2', 'diary_p3', 'diary_p4', 'diary_p5',
+      // Día 2
+      'dia2_hogar_prov', 'dia2_hogar_red_tip', 'dia2_hogar_dec_prompt', 'dia2_hogar_shadow', 'dia2_hogar_cnv_clean', 'dia2_hogar_good', 'dia2_hogar_bad',
+      'dia2_ciencia_prov', 'dia2_ciencia_red_tip', 'dia2_ciencia_dec_prompt', 'dia2_ciencia_shadow', 'dia2_ciencia_cnv_clean', 'dia2_ciencia_good', 'dia2_ciencia_bad',
+      'dia2_patio_prov', 'dia2_patio_red_tip', 'dia2_patio_dec_prompt', 'dia2_patio_shadow', 'dia2_patio_cnv_clean', 'dia2_patio_good', 'dia2_patio_bad',
+      // Día 3
+      'dia3_hogar_prov', 'dia3_hogar_red_tip', 'dia3_hogar_dec_prompt', 'dia3_hogar_shadow', 'dia3_hogar_cnv_clean', 'dia3_hogar_good', 'dia3_hogar_bad',
+      'dia3_cafeteria_prov', 'dia3_cafeteria_red_tip', 'dia3_cafeteria_dec_prompt', 'dia3_cafeteria_shadow', 'dia3_cafeteria_cnv_clean', 'dia3_cafeteria_good', 'dia3_cafeteria_bad',
+      'dia3_patio_prov', 'dia3_patio_red_tip', 'dia3_patio_dec_prompt', 'dia3_patio_shadow', 'dia3_patio_cnv_clean', 'dia3_patio_good', 'dia3_patio_bad',
+      // Día 4
+      'dia4_hogar_prov', 'dia4_hogar_red_tip', 'dia4_hogar_dec_prompt', 'dia4_hogar_shadow', 'dia4_hogar_cnv_clean', 'dia4_hogar_good', 'dia4_hogar_bad',
+      'dia4_examen_prov', 'dia4_examen_red_tip', 'dia4_examen_dec_prompt', 'dia4_examen_shadow', 'dia4_examen_cnv_clean', 'dia4_examen_good', 'dia4_examen_bad',
+      'dia4_patio_prov', 'dia4_patio_red_tip', 'dia4_patio_dec_prompt', 'dia4_patio_shadow', 'dia4_patio_cnv_clean', 'dia4_patio_good', 'dia4_patio_bad',
+      // Día 5
+      'dia5_hogar_prov', 'dia5_hogar_red_tip', 'dia5_hogar_dec_prompt', 'dia5_hogar_shadow', 'dia5_hogar_cnv_clean', 'dia5_hogar_good', 'dia5_hogar_bad',
+      'dia5_colegio_prov', 'dia5_colegio_red_tip', 'dia5_colegio_dec_prompt', 'dia5_colegio_shadow', 'dia5_colegio_cnv_clean', 'dia5_colegio_good', 'dia5_colegio_bad',
+      'dia5_festival_prov', 'dia5_festival_red_tip', 'dia5_festival_dec_prompt', 'dia5_festival_shadow', 'dia5_festival_cnv_clean', 'dia5_festival_good', 'dia5_festival_bad',
+    ].forEach((vk) => {
+      this.load.audio(vk, `./assets/audio/voices/${vk}.m4a`);
+    });
+  }
+
+  create() {
+    gameState.story = this.cache.json.get('rpg_story');
+    soundManager.attach(this);
+
+    // Activar filtrado lineal para que Valentic HD se vea ultrasuave y sin píxeles cortados
+    if (this.textures.exists('valentic')) {
+      this.textures.get('valentic').setFilter(Phaser.Textures.FilterMode.LINEAR);
+    }
+    if (this.textures.exists('valentic_hd')) {
+      this.textures.get('valentic_hd').setFilter(Phaser.Textures.FilterMode.LINEAR);
+    }
+
+    // Registrar animaciones de caminar en 4 direcciones
+    const chars = [
+      'rpg_alex',
+      'rpg_elena',
+      'rpg_mateo',
+      'rpg_sofia',
+      'rpg_ricardo',
+      'rpg_sombra_hostil',
+      'rpg_sombra_calma',
+    ];
+    const dirs = ['down', 'left', 'right', 'up'];
+    chars.forEach((key) => {
+      dirs.forEach((dir, row) => {
+        const start = row * 3;
+        this.anims.create({
+          key: `${key}_walk_${dir}`,
+          frames: [
+            { key, frame: start + 1 },
+            { key, frame: start },
+            { key, frame: start + 2 },
+            { key, frame: start },
+          ],
+          frameRate: 8,
+          repeat: -1,
+        });
+        this.anims.create({
+          key: `${key}_idle_${dir}`,
+          frames: [{ key, frame: start }],
+          frameRate: 1,
         });
       });
     });
 
-    this.load.json('dialogues', './src/data/dialogues.json');
-
-    // Música ambiental (4 pistas en bucle)
-    this.load.audio('bgm_menu', './assets/audio/bgm/bgm_menu.m4a');
-    this.load.audio('bgm_hogar', './assets/audio/bgm/bgm_hogar.m4a');
-    this.load.audio('bgm_colegio', './assets/audio/bgm/bgm_colegio.m4a');
-    this.load.audio('bgm_tenso', './assets/audio/bgm/bgm_tenso.m4a');
-
-    // Voces de Valentic
-    [
-      'valentic_welcome',
-      'valentic_red',
-      'valentic_yellow',
-      'valentic_shadow',
-      'valentic_green',
-      'valentic_win',
-    ].forEach((vk) => {
-      this.load.audio(vk, `./assets/audio/voices/${vk}.mp3`);
-    });
-
-    // Escenarios unificados (5 entornos limpios)
-    this.load.image('bg_hogar', './assets/backgrounds/bg_hogar.png');
-    this.load.image('bg_cuarto', './assets/backgrounds/bg_cuarto.png');
-    this.load.image('bg_colegio_interior', './assets/backgrounds/bg_colegio_interior.png');
-    this.load.image('bg_colegio_exterior', './assets/backgrounds/bg_colegio_exterior.png');
-    this.load.image('bg_orientacion', './assets/backgrounds/bg_orientacion.png');
-
-    // Sprites de personajes (incluyendo Valentic exacto de campaña)
-    this.load.image('valentic', './assets/sprites/valentic_semaforo.png');
-    this.load.image('alex_tense', './assets/sprites/alex_tense.png');
-    this.load.image('alex_calm', './assets/sprites/alex_calm.png');
-    this.load.image('sombra_hostil', './assets/sprites/sombra_hostil.png');
-    this.load.image('sombra_protectora', './assets/sprites/sombra_protectora.png');
-    this.load.image('elena', './assets/sprites/elena.png');
-    this.load.image('mateo', './assets/sprites/mateo.png');
-    this.load.image('sofia', './assets/sprites/sofia.png');
-    this.load.image('profe_ricardo', './assets/sprites/profe_ricardo.png');
-  }
-
-  create() {
-    gameState.dialogues = this.cache.json.get('dialogues');
-    soundManager.attachPhaser(this);
     this.scene.start('MenuScene');
   }
 }
